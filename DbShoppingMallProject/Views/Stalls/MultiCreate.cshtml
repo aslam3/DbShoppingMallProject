@@ -1,0 +1,104 @@
+﻿@model DbShoppingMallProject.Models.Stall
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 5px;
+            text-align: left;
+        }
+</style>
+<h2>Create</h2>
+<form asp-action="MultiCreate" asp-controller="Stalls" method="post" id="formGivenId">
+
+    <input type="text" id="txtNo" name="StallNo" placeholder="StallNo">
+    <input type="text" id="txtName" name="StallName" placeholder="StallName">
+    <select id="txtCatId" asp-items="ViewBag.CatId">
+<option disabled selected value="">Select Category</option>
+</select>
+    <input type="text" id="txtVolume" name="Volume" placeholder="StallVolume">
+    
+    <select  id="txtLevel"  asp-items="@new  SelectList(Enum.GetNames(typeof(Level)))">
+        <option disabled selected value="">Select Level</option>
+    </select>
+    <input type="button" class="add-row" value="Add Row">
+    <table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Stall No</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Volume</th>
+                <th>Level</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button type="button" id="saveTo">save</button>
+
+    
+</form>
+@section scripts{
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var form = $("#formGivenId");
+            var data = new FormData(form[0]);
+
+
+
+            $(".add-row").click(function () {
+                var sNo = $("#txtNo").val();
+                var name = $("#txtName").val();
+                var catId = $("#txtCatId").val();
+                var volume = $("#txtVolume").val();
+                var level = $("#txtLevel").val();
+                var rowsIndex = $('table tbody tr').length;
+                data.append("stalls[" + rowsIndex + "].StallNo", sNo);
+                data.append("stalls[" + rowsIndex + "].StallName", name);
+                data.append("stalls[" + rowsIndex + "].CatId", catId);
+                data.append("stalls[" + rowsIndex + "].StallVolume", volume);
+                data.append("stalls[" + rowsIndex + "].Level",level );
+                
+                var markup = "<tr> <td><input type='checkbox' name='record'> </td> <td> " + sNo + " <input type='hidden' name='stalls[" + rowsIndex + "].StallName' value='" + name + "'></td> <td>" + name + "  </td><td>" + catId + "</td><td>"+volume+"</td><td>"+level+"</td></tr>";
+
+                $("table tbody").append(markup);
+            });
+
+            $("#saveTo").click(function (e) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Stalls/MultiCreate",
+
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        alert('File Uploaded Successfully.')
+                    }
+                });
+
+            });
+
+
+
+
+
+        });
+    </script>
+}

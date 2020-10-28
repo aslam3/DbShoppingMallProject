@@ -1,0 +1,21 @@
+﻿@model DbShoppingMallProject.Data.Services
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <div>
+        <label>Service Name</label>
+        @Html.DisplayFor(m => m.Title)
+    </div>
+    <div>
+        <label>Description</label>
+        @Html.Raw(Model.Description)
+    </div>
+    <div>
+        <label>Company Name</label>
+        @Html.DisplayFor(m => m.StallId)
+    </div>
+</div>

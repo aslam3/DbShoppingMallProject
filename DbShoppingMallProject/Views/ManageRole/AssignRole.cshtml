@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "AssignRole";
+}
+
+<h2>Assign Roll to User</h2>
+
+<div>
+    @if (ViewBag.result != null)
+    {
+
+    }
+</div>
+<form method="post" action="AssignRole">
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <label>User</label>
+            @if (ViewBag.Userlist != null)
+            {
+                <select asp-items="@ViewBag.Userlist" name="Userlist">
+                    <option>
+                        Select User name
+                    </option>
+                </select>
+            }
+        </div>
+        <div class="col-md-4">
+            <label>User</label>
+            @if (ViewBag.Rolelist != null)
+            {
+                <select asp-items="@ViewBag.Rolelist" name="Rolelist">
+                    <option>
+                        Select Role name
+                    </option>
+                </select>
+            }
+        </div>
+        <div>
+            <input type="submit" value="Assign" />
+        </div>
+    </div>
+</form>

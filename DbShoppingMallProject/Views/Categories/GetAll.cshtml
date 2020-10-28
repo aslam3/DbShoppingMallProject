@@ -1,0 +1,141 @@
+﻿@model IEnumerable<DbShoppingMallProject.ViewModel.CatStallVm>
+@{
+    ViewData["Title"] = "GetAll";
+}
+
+
+
+<style>
+    body {
+        font-family: Arial;
+        font-size: 10pt;
+    }
+
+    .Grid {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        background-color: #fff;
+    }
+
+        .Grid th {
+            background-color: #B8DBFD;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .Grid th, .Grid td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .Grid img {
+            cursor: pointer;
+        }
+
+    .ChildGrid {
+        width: 100%;
+    }
+
+        .ChildGrid th {
+            background-color: #6C6C6C;
+            color: #fff;
+            font-weight: bold;
+        }
+</style>
+<h2>GetAll</h2>
+<table class="Grid">
+    <tr>
+        <th></th>
+        <th>Category</th>
+        <th>Description</th>
+    </tr>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="~/images/plus.png" />
+                <div style="display:none;">
+                    @if (item.Stalls.Count > 0)
+                    {
+                        <table>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>Volume</th>
+                                <th>Level</th>
+                            </tr>
+                            @foreach(var s in item.Stalls)
+                            {
+                                <tr>
+                                    <td>@s.StallName</td>
+                                    <td>@s.StallVolume</td>
+                                    <td>@s.Level</td>
+                                    <td>
+                                        <button class="btnedit btn btn-default">Edit</button> 
+                                    </td>
+                                </tr>
+                                <tr class="edittemplate">
+                                    <td colspan="4">
+                                        <form  method="post">
+
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" asp-for="@s.Id" name="txtId" />
+                                                        <input type="text" asp-for="@s.StallName" name="txtname" />
+                                                    </td>
+                                                    <td><input type="text" asp-for="@s.StallVolume" name="txtvolum" /></td>
+                                                    <td><select asp-for="@s.Level" asp-items="Html.GetEnumSelectList<Level>()" name="txtLevel">
+                                                                        
+                                                   <option selected="selected" value="">Please select</option>                                                                </select></td>
+                                                    <td>
+                                                        <select type="text" asp-for="@s.CatId" asp-items="ViewBag.CatId" name="txtcat">
+                                                            <option>Select Category</option>
+                                                       </select>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btnupdate btn btn-default" asp-action="Update" asp-controller="Categories">Update</button>
+                                                        <button class="btncancel btn btn-danger">Cancel</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </td>
+            <td>@item.Category</td>
+            <td>@item.Description</td>
+        </tr>
+    }
+</table>
+
+@section scripts{ 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".edittemplate").hide();
+            $("body").on("click", "img[src*='plus.png']", function () {
+                $(this).closest("tr").after("<tr><td></td><td colspan='999'>" + $(this).next().html() + "</td></tr>");
+                $(this).attr("src", "/images/minus.png");
+            });
+            $("body").on("click", "img[src*='minus.png']", function () {
+                
+                $(this).attr("src", "/images/plus.png");
+                $(this).closest("tr").next().remove();
+            });
+            $("body").on("click", ".btnedit", function () {
+                $(this).closest("tr").next().show();
+                $(this).closest("tr").hide();
+            });
+            $("body").on("click", ".btncanecl", function () {
+                $(this).closest("tr").next().hide();
+                $(this).closest("tr").show();
+            });
+        })
+    </script>
+}

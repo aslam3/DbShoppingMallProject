@@ -1,0 +1,133 @@
+﻿@model DbShoppingMallProject.Data.Salary
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Salary Details</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div >
+
+                <div class="form-group">
+                    <input type="text" asp-for="Id" id="txtId" hidden />
+                    <label class="col-md-4">Designation</label>
+                    <input type="text" asp-for="Designation" id="txtDesig"/>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4">Basic</label>
+                    <input type="text" asp-for="Basic" id="txtBasic" />
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Save" id="btnSave" />
+                    <input type="button" value="Update" id="btnUpdate" />
+                    
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <table id="tbl" class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Designation</td>
+                    <td>Basic</td>
+                    <td>Medical</td>
+                    <td>HouseRent</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{ 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jqueryui/jquery-ui.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+
+    <script >
+        $(document).ready(function () {
+            LoadData();
+            $("#btnSave").click(function () {
+                var data = new FormData();
+                $("input[type='text']").each(function (x, y) {
+                    data.append($(y).attr("name"), $(y).val());
+                });
+
+                $.ajax({
+                    url: "/Salaries/AddSalary",
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: data
+                }).done(function () {
+                    LoadData();
+                }).fail(function (er) {
+                    console.log(er)
+                })
+            })
+
+            $("#btnUpdate").click(function () {
+                var data = new FormData();
+                $("input[type='text']").each(function (x, y) {
+                    data.append($(y).attr("name"), $(y).val());
+                });
+
+                $.ajax({
+                    url: "/Salaries/UpdateSalary",
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: data
+                }).done(function () {
+                    LoadData();
+                }).fail(function (er) {
+                    console.log(er)
+                })
+            })
+
+            
+        })
+
+
+
+        function LoadData() {
+            $.ajax({
+                url: "/Salaries/Get",
+                type: "GET"
+            }).done(function (d) {
+                console.log(d)
+
+                $("#tbl tbody").empty();
+                $.each(d, function (i, v) {
+                    $("#tbl tbody").append("<tr><td>" + v.designation + "</td>"
+                        + "<td>" + v.basic + "</td>+<td>"
+                        + v.medical + "</td >" + "<td>"
+                        + v.houseRent + "</td >"
+                        + "<td><button onclick='Edit(" + v.id +")'>Edit</button>"+"</td></tr > ")
+                })
+                }).fail(function (er) {
+                    console.log(er)
+                })
+                
+        }
+        function Edit(id) {
+            $.ajax({
+                url: "/Salaries/GetById/" + id,
+                type: "GET"
+            }).done(function (d) {
+                $("#txtId").val(d.id)
+                $("#txtDesig").val(d.designation)
+                $("#txtBasic").val(d.basic)
+                }).fail(function (er) {
+                    console.log(er)
+                })
+        }
+    </script>
+
+}

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DbShoppingMallProject.Data.Services>
+@{
+    ViewData["Title"] = "Index";
+}
+@Html.ActionLink("Add Service","Create","Service")
+<h2>Service information</h2>
+
+<div >
+ <table class="table table-bordered table-striped">
+     <tr>
+         <th>Service Title</th>
+         <th>Description</th>
+         <th>Stall</th>
+     </tr>
+     @foreach (var item in Model)
+     {
+         <tr>
+             <td>@item.Title</td>
+             <td>@Html.Raw(item.Description)</td>
+             <td> @item.StallId</td>
+             <td>
+                 @Html.ActionLink("Edit", "Edit", "Service", new { id = item.Id }, null)|
+                 @Html.ActionLink("Details", "Details", "Service", new { id = item.Id }, null)|
+                 @Html.ActionLink("Delete", "Delete", "Service", new { id = item.Id }, null)
+
+             </td>
+         </tr>
+     }
+ </table>
+</div>

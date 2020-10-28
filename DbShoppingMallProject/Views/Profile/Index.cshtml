@@ -1,0 +1,28 @@
+﻿@model DbShoppingMallProject.Data.ApplicationUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>My Profile</h2>
+<div>
+    <div>
+        <label>Name</label>
+        @Model.UserName
+    </div>
+    <div>
+        <label>Email</label>
+        @Model.Email
+    </div>
+    <div>
+        <label>Birth Date</label>
+        @Model.Dob
+    </div>
+    <div>
+        <label>Image</label>
+        <img src="@Url.Content(Model.ImagePath)" height="70" width="70"/>
+    </div>
+    <div>
+        @Html.ActionLink("Edit","Edit","Profile",new  { id=Model.Id})
+    </div>
+</div>
+

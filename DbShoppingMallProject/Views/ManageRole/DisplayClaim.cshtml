@@ -1,0 +1,43 @@
+﻿@model DbShoppingMallProject.ViewModel.ClaimVm
+@{
+    ViewData["Title"] = "DisplayClaim";
+}
+
+<h2>DisplayClaim</h2>
+
+<div>
+    @ViewBag.Result
+</div>
+
+<form method="post" asp-action="DisplayClaim">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2>Manager User claim</h2>
+        </div>
+        <div class="panel-body">
+            <div>
+                @if (ViewBag.Userlist != null)
+                {
+                    <select asp-items="@ViewBag.Userlist" name="Userlist" asp-for="@Model.Email">
+                        <option>
+                            Select User name
+                        </option>
+                    </select>
+                }
+            </div>
+            <div>
+                @for (int i = 0; i < Model.UserClaims.Count; i++)
+                {
+                    <input asp-for="@Model.UserClaims[i].ClaimType" hidden />
+                    <input asp-for="@Model.UserClaims[i].Isselected" />
+                    <label asp-for="@Model.UserClaims[i].Isselected">
+                        @Model.UserClaims[i].ClaimType
+                    </label>
+                }
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type="submit" value="Assign" />
+        </div>
+    </div>
+</form>

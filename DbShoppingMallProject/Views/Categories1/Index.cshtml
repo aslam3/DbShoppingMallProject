@@ -1,0 +1,116 @@
+﻿@model IEnumerable<DbShoppingMallProject.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>All Category</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Stall
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+               Category
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <div>
+
+                    <input type="button"  class="btnStall" value="Select" />
+                    <input type="button" class="btnHide" value="Hide" hidden/>
+                    
+                    <div class="stl" style="display:none">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Stall Name</th>
+                                <th>Contact Manager</th>
+
+                            </tr>
+                            @{
+                                foreach (var s in item.stalls)
+                                {
+                                    <tr>
+                                        <td>@s.StallName </td>
+                                        <td>
+                                            @{
+                                                foreach (var m in s.StallManagers)
+                                                {
+                                                    if (m.Id > 0)
+                                                    {
+                                                        <p><label>@m.Name </label>  <button>Info</button></p>
+                                                    }
+
+                                                }
+                                            }
+                                        </td>
+
+                                    </tr>
+
+
+
+
+
+                                }
+                            }
+                        </table>
+
+                    </div>
+                </div>
+
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section scripts{ 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jqueryui/jquery-ui.js"></script>
+@*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
+    <script>
+        $(document).ready(function () {
+
+            $(".btnStall").click(function () {
+                $(".stl").attr("style", "display")
+                //$(this).closest("tr >td >div>div").attr("style", "display")
+                $(".btnHide").show();
+                $(".btnStall").hide();
+                
+            })
+            //$("body").on("click", ".btnStall", function () {
+            //    $(this).next().attr("style", "display")
+                
+            //});
+            $(".btnHide").click(function () {
+                $(".stl").attr("style", "display:none")
+                $(".btnHide").hide();
+                $(".btnStall").show();
+            })
+        })
+    </script>
+
+}
